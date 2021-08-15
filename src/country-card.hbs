@@ -1,9 +1,10 @@
 <h1 class='name'>{{name}}</h1>
-<p class='capital'>{{capital}}</p>
-<p class='population'>{{population}}</p>
+<p class='capital'>Capital: {{capital}}</p>
+<p class='population'>Population: {{population}}</p>
 <ul class='languages'>
+  <h2>Languages:</h2>
   {{#each languages}}
     <li> {{name}}</li>
   {{/each}}
 </ul>
-<img src='{{flag}}' alt='flag' />
+<img src='{{flag}}' alt='flag' height='100' />

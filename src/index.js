@@ -1,5 +1,5 @@
 import countryCard from './country-card.hbs'; // handlebars
-import countriesList from './country-list.hbs';
+import countriesList from './country-list.hbs'; // handlebars
 import { alert, notice, info, success, error } from '@pnotify/core'; //photify
 
 import fetchCountries from './fetchCountries'; // fetch func
