@@ -2,10 +2,6 @@ import countryCard from './country-card.hbs';
 import countriesList from './country-list.hbs';
 
 import '@pnotify/core/dist/PNotify.css';
-import '@pnotify/desktop/dist/PNotifyDesktop';
-import '@pnotify/core/dist/BrightTheme.css';
-import '@pnotify/core/dist/PNotify.css';
-import '@pnotify/desktop/dist/PNotifyDesktop';
 import '@pnotify/core/dist/BrightTheme.css';
 import { alert, notice, info, success, error } from '@pnotify/core';
 import * as _ from 'lodash';
@@ -33,24 +29,32 @@ function renderCountriesList(countries) {
 const inputHandler = event => {
   event.preventDefault();
   const inputValue = event.target.value;
-  fetchCountries(inputValue).then(ApiResponseArrayHandler).catch();
+  fetchCountries(inputValue)
+    .then(ApiResponseArrayHandler)
+    .catch(() =>
+      error({
+        text: 'Error. There is no such country in database',
+        type: 'error',
+        autoOpen: 'false',
+        delay: 1000,
+        animation: 'fade',
+      }),
+    );
 };
 
 function ApiResponseArrayHandler(countries) {
-  if (countries.length === 1) {
-    renderOneCountryCard(countries);
-    console.log('one country func');
-  } else if (countries.length > 10) {
-    notice({
-      text: 'Too much countries',
-      type: 'error',
+  if (countries.length > 10) {
+    info({
+      text: 'Too much countries. Type more specific',
+      type: 'info',
       autoOpen: 'false',
       delay: 1000,
       animation: 'fade',
     });
-  } else {
+  } else if (countries.length === 1) {
+    renderOneCountryCard(countries);
+  } else if (countries.length <= 10) {
     renderCountriesList(countries);
-    console.log('few country func');
   }
 }
 
