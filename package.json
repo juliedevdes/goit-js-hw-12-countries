@@ -26,6 +26,8 @@
     "posthtml-include": "^1.6.2"
   },
   "dependencies": {
-    "handlebars": "^4.7.7"
+    "handlebars": "^4.7.7",
+    "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8"
   }
 }

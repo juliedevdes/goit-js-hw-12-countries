@@ -1,6 +1,14 @@
-import countryCard from './country-card.hbs'; // handlebars
-import countriesList from './country-list.hbs'; // handlebars
-import { alert, notice, info, success, error } from '@pnotify/core'; //photify
+import countryCard from './country-card.hbs';
+import countriesList from './country-list.hbs';
+
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/desktop/dist/PNotifyDesktop';
+import '@pnotify/core/dist/BrightTheme.css';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/desktop/dist/PNotifyDesktop';
+import '@pnotify/core/dist/BrightTheme.css';
+import { alert, notice, info, success, error } from '@pnotify/core';
+import * as _ from 'lodash';
 
 import fetchCountries from './fetchCountries'; // fetch func
 
@@ -16,17 +24,16 @@ function renderOneCountryCard(country) {
 
 //render list of contries
 function renderCountriesList(countries) {
-  const obj = { countries: countries }; // костыль
+  const obj = { countries: countries };
   const markup = countriesList(obj);
   container.innerHTML = markup;
 }
 
 //api request by input value
 const inputHandler = event => {
+  event.preventDefault();
   const inputValue = event.target.value;
-  fetchCountries(inputValue)
-    .then(ApiResponseArrayHandler)
-    .catch(error => console.alert(error));
+  fetchCountries(inputValue).then(ApiResponseArrayHandler).catch();
 };
 
 function ApiResponseArrayHandler(countries) {
@@ -34,7 +41,13 @@ function ApiResponseArrayHandler(countries) {
     renderOneCountryCard(countries);
     console.log('one country func');
   } else if (countries.length > 10) {
-    console.log('too much countries');
+    notice({
+      text: 'Too much countries',
+      type: 'error',
+      autoOpen: 'false',
+      delay: 1000,
+      animation: 'fade',
+    });
   } else {
     renderCountriesList(countries);
     console.log('few country func');
@@ -42,4 +55,4 @@ function ApiResponseArrayHandler(countries) {
 }
 
 //eventList
-input.addEventListener('input', inputHandler);
+input.addEventListener('input', _.debounce(inputHandler, 500));

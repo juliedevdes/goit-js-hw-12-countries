@@ -1,10 +1,11 @@
-<h1 class='name'>{{name}}</h1>
-<p class='capital'>Capital: {{capital}}</p>
-<p class='population'>Population: {{population}}</p>
-<ul class='languages'>
+<div class="country-info-block">
+  <h1 class='name'>{{name}}</h1>
+  <p class='capital'>Capital: {{capital}}</p>
+  <p class='population'>Population: {{population}}</p>
   <h2>Languages:</h2>
-  {{#each languages}}
-    <li> {{name}}</li>
-  {{/each}}
-</ul>
-<img src='{{flag}}' alt='flag' height='100' />
+    {{#each languages}}
+      <li> {{name}}</li>
+    {{/each}}
+  </ul>
+  </div>
+  <img class='img' src='{{flag}}' alt='flag' height='200' width="300" /><ul class='languages'>
