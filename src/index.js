@@ -12,6 +12,7 @@ import fetchCountries from './fetchCountries'; // fetch func
 const input = document.querySelector('.input');
 const container = document.querySelector('.container');
 
+// ---- RENDER ----
 //render one country
 function renderOneCountryCard(country) {
   const markup = countryCard(country[0]);
@@ -25,38 +26,47 @@ function renderCountriesList(countries) {
   container.innerHTML = markup;
 }
 
-//api request by input value
-const inputHandler = event => {
-  event.preventDefault();
-  const inputValue = event.target.value;
-  fetchCountries(inputValue)
-    .then(ApiResponseArrayHandler)
-    .catch(() =>
-      error({
-        text: 'Error. There is no such country in database',
-        type: 'error',
-        autoOpen: 'false',
-        delay: 1000,
-        animation: 'fade',
-      }),
-    );
-};
+//func for errors
+function onError() {
+  container.innerHTML = '';
+  return error({
+    text: 'Error. There is no such country in database',
+    type: 'error',
+    autoOpen: 'false',
+    delay: 1000,
+    animation: 'fade',
+  });
+}
 
+//if too many countries func
+function onNotSpecQuery() {
+  info({
+    text: 'Too much countries. Type more specific',
+    type: 'info',
+    autoOpen: 'false',
+    delay: 1000,
+    animation: 'fade',
+  });
+  container.innerHTML = '';
+}
+
+//API func
 function ApiResponseArrayHandler(countries) {
   if (countries.length > 10) {
-    info({
-      text: 'Too much countries. Type more specific',
-      type: 'info',
-      autoOpen: 'false',
-      delay: 1000,
-      animation: 'fade',
-    });
+    onNotSpecQuery();
   } else if (countries.length === 1) {
     renderOneCountryCard(countries);
   } else if (countries.length <= 10) {
     renderCountriesList(countries);
   }
 }
+
+// ======= API request ======
+const inputHandler = event => {
+  event.preventDefault();
+  const inputValue = event.target.value;
+  fetchCountries(inputValue).then(ApiResponseArrayHandler).catch(onError);
+};
 
 //eventList
 input.addEventListener('input', _.debounce(inputHandler, 500));
